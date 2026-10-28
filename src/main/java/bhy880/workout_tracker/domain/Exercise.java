@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity 
 public class Exercise {
@@ -16,7 +18,10 @@ public class Exercise {
     int sets;
     int repsPerSet;
     double weightInKg;
-    
+
+    @ManyToOne 
+    @JoinColumn(name = "workoutid")
+    private Workout workout;
     
     public Exercise() {
     }
@@ -75,9 +80,5 @@ public class Exercise {
     public void setWeightInKg(double weightInKg) {
         this.weightInKg = weightInKg;
     }
-    
-
-
-    
 
 }

@@ -1,14 +1,15 @@
 package bhy880.workout_tracker.domain;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Transient;
 
 @Entity 
 public class Workout {
@@ -16,16 +17,15 @@ public class Workout {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    
     private String workoutName;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private List<Excercise> excercises;
+    private LocalDate workoutDate;
+    private int durationInMinutes;
 
-    @Transient
-    public Duration getDuration() {
-        
-        return Duration.between(startTime, endTime);
-    }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "workout")
+    private List<Exercise> exercises = new ArrayList<>();
+
+   
 
     public Workout(){
 
@@ -33,13 +33,13 @@ public class Workout {
 
     
 
-    public Workout(Long id, String workoutName, LocalDateTime startTime, LocalDateTime endTime,
-            List<Excercise> excercises) {
+    public Workout(Long id, String workoutName, LocalDate workoutDate, int durationInMinutes,
+            List<Exercise> exercises) {
         this.id = id;
         this.workoutName = workoutName;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.excercises = excercises;
+        this.workoutDate = workoutDate;
+        this.durationInMinutes = durationInMinutes;
+        this.exercises = exercises;
     }
 
     public Long getId() {
@@ -54,23 +54,29 @@ public class Workout {
     public void setWorkoutName(String workoutName) {
         this.workoutName = workoutName;
     }
-    public LocalDateTime getStartTime() {
-        return startTime;
+    
+    public LocalDate getWorkoutDate() {
+        return workoutDate;
     }
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+
+    public void setWorkouDate(LocalDate workouDate) {
+        this.workoutDate = workouDate;
     }
-    public LocalDateTime getEndTime() {
-        return endTime;
+
+    public int getDurationInMinutes() {
+        return durationInMinutes;
     }
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+
+    public void setDurationInMinutes(int durationInMinutes) {
+        this.durationInMinutes = durationInMinutes;
     }
-    public List<Excercise> getExcercises() {
-        return excercises;
+
+    
+    public List<Exercise> getExercises() {
+        return exercises;
     }
-    public void setExcercises(List<Excercise> excercises) {
-        this.excercises = excercises;
+    public void setExcercises(List<Exercise> exercises) {
+        this.exercises = exercises;
     }
 
     

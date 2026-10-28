@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import bhy880.workout_tracker.domain.ExerciseRepository;
 import bhy880.workout_tracker.domain.Workout;
 import bhy880.workout_tracker.domain.WorkoutRepository;
 
@@ -15,10 +15,14 @@ import bhy880.workout_tracker.domain.WorkoutRepository;
 public class WorkoutController {
 
     @Autowired 
-    private WorkoutRepository wRepository;    
+    private WorkoutRepository wRepository;
+    
+    @Autowired
+    private ExerciseRepository eRepository;
 
-    public WorkoutController(WorkoutRepository wRepository) {
+    public WorkoutController(WorkoutRepository wRepository, ExerciseRepository eRepository) {
         this.wRepository = wRepository;
+        this.eRepository= eRepository;
     }
 
     @GetMapping("/addworkout")

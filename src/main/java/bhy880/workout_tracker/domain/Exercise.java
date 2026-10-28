@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity 
-public class Excercise {
+public class Exercise {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,12 +18,12 @@ public class Excercise {
     double weightInKg;
     
     
-    public Excercise() {
+    public Exercise() {
     }
 
     
 
-    public Excercise(String exerciseName, int sets, int repsPerSet, double weightInKg) {
+    public Exercise(String exerciseName, int sets, int repsPerSet, double weightInKg) {
         this.exerciseName = exerciseName;
         this.sets = sets;
         this.repsPerSet = repsPerSet;

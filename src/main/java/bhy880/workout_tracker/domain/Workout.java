@@ -59,7 +59,7 @@ public class Workout {
         return workoutDate;
     }
 
-    public void setWorkouDate(LocalDate workouDate) {
+    public void setWorkoutDate(LocalDate workouDate) {
         this.workoutDate = workouDate;
     }
 

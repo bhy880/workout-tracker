@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import bhy880.workout_tracker.domain.ExerciseRepository;
 import bhy880.workout_tracker.domain.Workout;
 import bhy880.workout_tracker.domain.WorkoutRepository;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller 
 public class WorkoutController {
@@ -25,23 +27,30 @@ public class WorkoutController {
         this.eRepository= eRepository;
     }
 
+    @GetMapping("/workouts")
+    public String showWorkouts(Model model) {
+        model.addAttribute("workouts", wRepository.findAll());
+        return "workouts";
+    }
+    
+
     @GetMapping("/addworkout")
-    public String addWorkoutForm(Model model) {
+    public String addWorkout(Model model) {
         model.addAttribute("workout", new Workout());
-        return "addworkout";
+        return "workoutform";
     }
 
     @PostMapping("/addworkout")
-    public String addWorkout(Workout workout) {
+    public String saveWorkout(Workout workout) {
         wRepository.save(workout);
-        return "redirect:/addworkout";
+        return "redirect:/workouts";
     }
 
     @GetMapping("/editworkout/{id}")
     public String editWorkoutForm(@PathVariable Long id, Model model) {
         Workout workout = wRepository.findById(id).orElseThrow();
         model.addAttribute("workout", workout);
-        return "editworkout";
+        return "workoutform";
     }
 
     @PostMapping("/editworkout/{id}")
@@ -49,12 +58,18 @@ public class WorkoutController {
              Workout workout) {
         workout.setId(id);
         wRepository.save(workout);
-        return "redirect:/editworkout/" + id;
+        return "redirect:/workouts";
     }
 
     @PostMapping("/deleteworkout/{id}")
     public String deleteWorkout(@PathVariable Long id) {
         wRepository.deleteById(id);
-        return "redirect:/addworkout";
+        return "redirect:/workouts";
     }
+
+    @GetMapping("/workout/{id}")
+    public String workoutDetail(@PathVariable Long id, Model model) {
+    model.addAttribute("workout", wRepository.findById(id).orElseThrow());
+    return "workoutdetails";
+}
 }

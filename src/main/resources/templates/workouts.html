@@ -1,11 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head><title>Workouts</title></head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Workouts</title>
+</head>
 <body>
-<h1>Workouts</h1>
+    <h1>Workouts</h1>
+    <a th:href="@{/addworkout}">Add workout</a>
 
-
-
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Duration (min)</th>
+            <th></th>
+        </tr>
+        <tr th:each="workout : ${workouts}">
+            <td>
+                <a th:href="@{/workout/{id}(id=${workout.id})}"
+                   th:text="${workout.workoutName}">Name</a>
+            </td>
+            <td th:text="${workout.workoutDate}"></td>
+            <td th:text="${workout.durationInMinutes}"></td>
+            <td>
+                <a th:href="@{/editworkout/{id}(id=${workout.id})}">Edit</a>
+                <a th:href="@{/deleteworkout/{id}(id=${workout.id})}">Delete</a>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

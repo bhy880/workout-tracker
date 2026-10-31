@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Workout</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
     <h1 th:text="${workout.workoutName}">Workout</h1>
@@ -10,7 +11,7 @@
     <p>Duration: <span th:text="${workout.durationInMinutes}"></span> min</p>
 
     <h2>Exercises</h2>
-    <table>
+    <table class="table table-striped">
         <tr>
             <th>Exercise</th><th>Sets</th><th>Reps</th><th>Weight (kg)</th><th></th>
         </tr>
@@ -19,7 +20,8 @@
             <td th:text="${exercise.sets}"></td>
             <td th:text="${exercise.repsPerSet}"></td>
             <td th:text="${exercise.weightInKg}"></td>
-            <td><a th:href="@{/editexercise/{id}(id=${exercise.id})}">Edit</a></td>
+            <td><a th:href="@{/editexercise/{id}(id=${exercise.id})}" class="btn btn-primary">Edit</a></td>
+            <td><a th:href="@{/deleteexercise/{id}(id=${exercise.id})}" class="btn btn-danger">Delete</a></td>
         </tr>
     </table>
 

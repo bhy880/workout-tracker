@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+<html xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="UTF-8">
+        <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
     <title>Workouts</title>
 </head>
 <body>
-    <h1>Workouts</h1>
-    <a th:href="@{/addworkout}">Add workout</a>
+    <h1>Workouts of <span sec:authentication="name"></span>.</h1>
 
-    <table>
+    
+    <table class="table table-striped">
         <tr>
             <th>Name</th>
             <th>Date</th>
@@ -18,15 +20,24 @@
         <tr th:each="workout : ${workouts}">
             <td>
                 <a th:href="@{/workout/{id}(id=${workout.id})}"
-                   th:text="${workout.workoutName}">Name</a>
+                th:text="${workout.workoutName}">Name</a>
             </td>
             <td th:text="${workout.workoutDate}"></td>
             <td th:text="${workout.durationInMinutes}"></td>
+            
             <td>
-                <a th:href="@{/editworkout/{id}(id=${workout.id})}">Edit</a>
-                <a th:href="@{/deleteworkout/{id}(id=${workout.id})}">Delete</a>
+                <a th:href="@{/deleteworkout/{id}(id=${workout.id})}"
+                   class="btn btn-danger">Delete</a>
             </td>
+            <td>
+                <a th:href="@{/editworkout/{id}(id=${workout.id})}"
+                   class="btn btn-primary">Edit</a>
+            </td>
+            
         </tr>
     </table>
+    <div>
+        <a th:href="@{/addworkout}" class="btn btn-success">Add workout</a>
+    </div>
 </body>
 </html>

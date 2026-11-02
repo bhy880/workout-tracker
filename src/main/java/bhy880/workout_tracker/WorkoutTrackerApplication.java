@@ -4,8 +4,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.time.LocalDate;
 
+import bhy880.workout_tracker.domain.AppUser;
+import bhy880.workout_tracker.domain.AppUserRepository;
 import bhy880.workout_tracker.domain.Exercise;
 import bhy880.workout_tracker.domain.ExerciseRepository;
 import bhy880.workout_tracker.domain.Workout;
@@ -20,9 +24,16 @@ public class WorkoutTrackerApplication {
 
 	@Bean
 	public CommandLineRunner alustusData(WorkoutRepository wRepository,
-	ExerciseRepository eRepository) {
+		ExerciseRepository eRepository,
+		AppUserRepository appUserRepository,
+		BCryptPasswordEncoder encoder) {
 
 		return args -> {
+
+			if (appUserRepository.count() == 0) {
+            appUserRepository.save(new AppUser("user", encoder.encode("user"), "USER"));
+            appUserRepository.save(new AppUser("admin", encoder.encode("admin"), "ADMIN"));
+        }
 
 			if (wRepository.count()== 0){
 

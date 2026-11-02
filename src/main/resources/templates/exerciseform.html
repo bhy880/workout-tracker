@@ -5,9 +5,10 @@
     <title>Add Exercise</title>
 </head>
 <body>
-    <h1>Add Exercise</h1>
+    <h1 th:text="${exercise.id == null} ? 'Add Exercise' : 'Edit Exercise'">Exercise</h1>
 
-    <form th:action="@{/addexercise}" th:object="${exercise}" method="post">
+    <form th:action="${exercise.id == null} ? @{/addexercise/{wid}(wid=${exercise.workout.id})} : @{/editexercise/{id}(id=${exercise.id})}"
+      th:object="${exercise}" method="post">
         <div>
             <label for="exerciseName">Exercise name:</label>
             <input id="exerciseName" type="text" th:field="*{exerciseName}" required>
@@ -31,6 +32,6 @@
         <button type="submit">Save Exercise</button>
     </form>
 
-    <a th:href="@{/workouts}">Cancel</a>
+    <a th:href="@{/workout/{exercise.workout.id}}">Cancel</a>
 </body>
 </html>

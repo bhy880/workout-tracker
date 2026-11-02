@@ -9,27 +9,36 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import bhy880.workout_tracker.domain.Exercise;
 import bhy880.workout_tracker.domain.ExerciseRepository;
+import bhy880.workout_tracker.domain.Workout;
+import bhy880.workout_tracker.domain.WorkoutRepository;
 
 @Controller
 public class ExerciseController {
 
-    @Autowired
+    
+    private WorkoutRepository workoutRepository;
     private ExerciseRepository exerciseRepository;
 
-    public ExerciseController(ExerciseRepository exerciseRepository) {
+    public ExerciseController(ExerciseRepository exerciseRepository, WorkoutRepository workoutRepository) {
         this.exerciseRepository = exerciseRepository;
+        this.workoutRepository = workoutRepository;
     }
 
-    @GetMapping("/addexercise")
-    public String addExercise(Model model) {
-        model.addAttribute("exercise", new Exercise());
+    @GetMapping("/addexercise/{workoutId}")
+    public String addExercise(@PathVariable Long workoutId, Model model) {
+        Workout workout = workoutRepository.findById(workoutId).orElseThrow();
+        Exercise exercise = new Exercise();
+        exercise.setWorkout(workout);
+        model.addAttribute("exercise", exercise);
         return "exerciseform";
     }
 
-    @PostMapping("/addexercise")
-    public String saveExercise(Exercise exercise) {
+    @PostMapping("/addexercise/{workoutId}")
+    public String saveExercise(@PathVariable Long workoutId,Exercise exercise) {
+        Workout workout = workoutRepository.findById(workoutId).orElseThrow();
+        exercise.setWorkout(workout);
         exerciseRepository.save(exercise);
-        return "redirect:/workouts";
+        return "redirect:/workout/" + workoutId;
     }
 
     @GetMapping("/editexercise/{id}")
@@ -40,15 +49,21 @@ public class ExerciseController {
     }
 
     @PostMapping("/editexercise/{id}")
-    public String editExercise(@PathVariable Long id, Exercise exercise) {
-        exercise.setId(id);
+    public String editExercise(@PathVariable Long id, Exercise currExercise) {
+        Exercise exercise = exerciseRepository.findById(id).orElseThrow();
+        exercise.setExerciseName(currExercise.getExerciseName());
+        exercise.setSets(currExercise.getSets());
+        exercise.setRepsPerSet(currExercise.getRepsPerSet());
+        exercise.setWeightInKg(currExercise.getWeightInKg());
         exerciseRepository.save(exercise);
-        return "redirect:/workouts";
+        return "redirect:/workout/" + exercise.getWorkout().getId();
     }
 
     @PostMapping("/deleteexercise/{id}")
     public String deleteExercise(@PathVariable Long id) {
-        exerciseRepository.deleteById(id);
-        return "redirect:/workouts";
+        Exercise exercise = exerciseRepository.findById(id).orElseThrow();
+        Long workoutId = exercise.getWorkout().getId();
+        exerciseRepository.delete(exercise);
+        return "redirect:/workout/" + workoutId;
     }
 }

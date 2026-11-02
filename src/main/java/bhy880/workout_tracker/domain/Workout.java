@@ -75,7 +75,7 @@ public class Workout {
     public List<Exercise> getExercises() {
         return exercises;
     }
-    public void setExcercises(List<Exercise> exercises) {
+    public void setExercises(List<Exercise> exercises) {
         this.exercises = exercises;
     }
 

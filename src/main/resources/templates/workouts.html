@@ -34,10 +34,13 @@
                    class="btn btn-primary">Edit</a>
             </td>
             
+            <td>
+            <form th:action="@{/deleteworkout/{id}(id=${workout.id})}" method="post">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </td>
+            
         </tr>
     </table>
-    <div>
-        <a th:href="@{/addworkout}" class="btn btn-success">Add workout</a>
-    </div>
 </body>
 </html>

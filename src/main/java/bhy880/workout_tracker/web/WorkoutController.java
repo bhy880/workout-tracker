@@ -54,12 +54,15 @@ public class WorkoutController {
     }
 
     @PostMapping("/editworkout/{id}")
-    public String editWorkout(@PathVariable Long id,
-             Workout workout) {
-        workout.setId(id);
-        wRepository.save(workout);
-        return "redirect:/workouts";
+    public String editWorkout(@PathVariable Long id, Workout currWorkout) {
+    Workout workout = wRepository.findById(id).orElseThrow();
+    workout.setWorkoutName(currWorkout.getWorkoutName());
+    workout.setWorkoutDate(currWorkout.getWorkoutDate());
+    workout.setDurationInMinutes(currWorkout.getDurationInMinutes());
+    wRepository.save(workout);
+    return "redirect:/workouts";
     }
+    
 
     @PostMapping("/deleteworkout/{id}")
     public String deleteWorkout(@PathVariable Long id) {

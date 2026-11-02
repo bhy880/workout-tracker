@@ -5,9 +5,10 @@
     <title>Add Workout</title>
 </head>
 <body>
-    <h1>Add Workout</h1>
+    <h1 th:text="${workout.id == null} ? 'Add Workout' : 'Edit workout'">Workout</h1>
 
-    <form th:action="@{/addworkout}" th:object="${workout}" method="post">
+    <form th:action="${workout.id == null} ? @{/addworkout} : @{/editworkout/{id}(id=${workout.id})}"
+      th:object="${workout}" method="post">
         <div>
             <label for="workoutName">Workout name:</label>
             <input id="workoutName" type="text" th:field="*{workoutName}" required>

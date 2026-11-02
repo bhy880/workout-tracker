@@ -15,10 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(securedEnabled = true)  
 public class WebSecurityConfig {
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+   
 
     @Bean 
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -27,7 +24,7 @@ public class WebSecurityConfig {
 			.anyRequest().authenticated()
 		)
 		.formLogin( formlogin -> formlogin
-			.loginPage("/login")
+			
 			.defaultSuccessUrl("/workouts", true)
 			.permitAll()
 		)

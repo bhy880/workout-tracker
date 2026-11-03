@@ -1,42 +1,60 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head>
-        <meta charset="UTF-8">
-        <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
     <title>Workouts</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 </head>
-<body>
-    <h1>Workouts of <span sec:authentication="name"></span>.</h1>
+<body class="container mt-4">
 
-    
+    <h1>Workouts</h1>
+
+    <!-- Login / logout -->
+    <div sec:authorize="isAnonymous()" class="mb-3">
+        <a th:href="@{/login}" class="btn btn-outline-primary">Log in</a>
+    </div>
+    <div sec:authorize="isAuthenticated()" class="mb-3">
+        Logged in as <strong sec:authentication="name"></strong>
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="btn btn-sm btn-secondary">Log out</button>
+        </form>
+    </div>
+
     <table class="table table-striped">
         <tr>
             <th>Name</th>
             <th>Date</th>
             <th>Duration (min)</th>
             <th></th>
+            <th></th>
         </tr>
         <tr th:each="workout : ${workouts}">
             <td>
                 <a th:href="@{/workout/{id}(id=${workout.id})}"
-                th:text="${workout.workoutName}">Name</a>
+                   th:text="${workout.workoutName}">Name</a>
             </td>
             <td th:text="${workout.workoutDate}"></td>
             <td th:text="${workout.durationInMinutes}"></td>
-            
+
+            <!-- Edit: any logged-in user -->
             <td>
-                <a th:href="@{/deleteworkout/{id}(id=${workout.id})}"
-                   class="btn btn-danger">Delete</a>
-            </td>
-            <td>
-                <a th:href="@{/editworkout/{id}(id=${workout.id})}"
+                <a sec:authorize="isAuthenticated()"
+                   th:href="@{/editworkout/{id}(id=${workout.id})}"
                    class="btn btn-primary">Edit</a>
             </td>
-            
+
+            <!-- Delete: ADMIN only -->
+            <td>
+                <form sec:authorize="hasRole('ADMIN')"
+                      th:action="@{/deleteworkout/{id}(id=${workout.id})}" method="post">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
         </tr>
     </table>
-    <div>
+
+    <div sec:authorize="isAuthenticated()">
         <a th:href="@{/addworkout}" class="btn btn-success">Add workout</a>
     </div>
 </body>

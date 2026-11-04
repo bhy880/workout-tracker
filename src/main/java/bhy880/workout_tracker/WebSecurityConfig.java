@@ -38,6 +38,10 @@ public class WebSecurityConfig {
             .defaultSuccessUrl("/myworkouts", true)
             .permitAll()
         )
+        .oauth2Login(oauth -> oauth
+            .loginPage("/login")
+            .defaultSuccessUrl("/myworkouts", true)
+        )
         .logout(logout -> logout
             .logoutSuccessUrl("/workouts")
             .permitAll()

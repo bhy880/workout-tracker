@@ -60,8 +60,8 @@ public class WorkoutController {
         if (result.hasErrors()) {
             return "workoutform";
         }
-        AppUser user = userRepository.findByUsername(auth.getName()).orElseThrow();
-        workout.setOwner(user);                 // creator becomes the owner
+        AppUser user = userRepository.findByUsername(auth.getName())
+        .orElseGet(() -> userRepository.save(new AppUser(auth.getName(), "", "USER")));        workout.setOwner(user);                 // creator becomes the owner
         wRepository.save(workout);
         return "redirect:/myworkouts";
     }

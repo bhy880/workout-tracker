@@ -30,7 +30,7 @@ public class WorkoutController {
     // Finds a workout only if it belongs to the logged-in user, otherwise 404
     private Workout findOwnWorkout(Long id, Authentication auth) {
         return wRepository.findByIdAndOwnerUsername(id, auth.getName())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow();
     }
 
     // Public list of everyone's workouts (read-only)

@@ -14,6 +14,7 @@
         <a sec:authorize="isAuthenticated()" th:href="@{/myworkouts}" class="btn btn-link">My workouts</a>
 
         <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-outline-primary">Log in</a>
+        <a sec:authorize="isAnonymous()" th:href="@{/signup}" class="btn btn-outline-secondary">Sign up</a>
         <span sec:authorize="isAuthenticated()">
             Logged in as <strong sec:authentication="name"></strong>
             <form th:action="@{/logout}" method="post" style="display:inline">

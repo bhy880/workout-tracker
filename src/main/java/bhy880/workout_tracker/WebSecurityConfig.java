@@ -22,18 +22,18 @@ public class WebSecurityConfig {
     }
 
     @Bean
-public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests(auth -> auth
             // static files and the login page are open to everyone
-            .requestMatchers("/css/**", "/login").permitAll()
+            .requestMatchers("/css/**", "/login", "/signup").permitAll()
             // read-only pages are open to everyone (GET only)
             .requestMatchers(HttpMethod.GET, "/", "/workouts", "/workout/**").permitAll()
             // everything else (add/edit) requires login
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
-            .loginPage("/login")                     // use our own login.html
+            .loginPage("/login")
             .defaultSuccessUrl("/myworkouts", true)
             .permitAll()
         )

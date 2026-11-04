@@ -28,7 +28,8 @@ public class WebSecurityConfig {
             // static files and the login page are open to everyone
             .requestMatchers("/css/**", "/login", "/signup").permitAll()
             // read-only pages are open to everyone (GET only)
-            .requestMatchers(HttpMethod.GET, "/", "/workouts", "/workout/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/", "/workouts", "/workout/**",
+             "/api/workouts", "/api/workouts/**").permitAll()
             // everything else (add/edit) requires login
             .anyRequest().authenticated()
         )

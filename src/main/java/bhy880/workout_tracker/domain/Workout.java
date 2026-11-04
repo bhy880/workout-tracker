@@ -8,6 +8,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -37,13 +39,13 @@ public class Workout {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "workout")
     private List<Exercise> exercises = new ArrayList<>();
 
-   
+    @ManyToOne
+    @JoinColumn(name = "userid")
+    private AppUser owner;
 
     public Workout(){
 
     }
-
-    
 
     public Workout(Long id, String workoutName, LocalDate workoutDate, int durationInMinutes,
             List<Exercise> exercises) {
@@ -83,7 +85,6 @@ public class Workout {
         this.durationInMinutes = durationInMinutes;
     }
 
-    
     public List<Exercise> getExercises() {
         return exercises;
     }
@@ -91,5 +92,12 @@ public class Workout {
         this.exercises = exercises;
     }
 
+    public AppUser getOwner() {
+        return owner;
+    }
+
+    public void setOwner(AppUser owner) {
+        this.owner = owner;
+    }  
     
 }

@@ -8,26 +8,30 @@
 </head>
 <body class="container mt-4">
 
-    <h1>Workouts</h1>
+    <!-- Navigation -->
+    <nav class="mb-3">
+        <a th:href="@{/workouts}" class="btn btn-link">All workouts</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/myworkouts}" class="btn btn-link">My workouts</a>
 
-    <!-- Login / logout -->
-    <div sec:authorize="isAnonymous()" class="mb-3">
-        <a th:href="@{/login}" class="btn btn-outline-primary">Log in</a>
-    </div>
-    <div sec:authorize="isAuthenticated()" class="mb-3">
-        Logged in as <strong sec:authentication="name"></strong>
-        <form th:action="@{/logout}" method="post" style="display:inline">
-            <button type="submit" class="btn btn-sm btn-secondary">Log out</button>
-        </form>
-    </div>
+        <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-outline-primary">Log in</a>
+        <span sec:authorize="isAuthenticated()">
+            Logged in as <strong sec:authentication="name"></strong>
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit" class="btn btn-sm btn-secondary">Log out</button>
+            </form>
+        </span>
+    </nav>
+
+    <h1 th:text="${mine} ? 'My workouts' : 'All workouts'">Workouts</h1>
 
     <table class="table table-striped">
         <tr>
             <th>Name</th>
             <th>Date</th>
             <th>Duration (min)</th>
-            <th></th>
-            <th></th>
+            <th th:unless="${mine}">Owner</th>
+            <th th:if="${mine}"></th>
+            <th th:if="${mine}"></th>
         </tr>
         <tr th:each="workout : ${workouts}">
             <td>
@@ -37,25 +41,21 @@
             <td th:text="${workout.workoutDate}"></td>
             <td th:text="${workout.durationInMinutes}"></td>
 
-            <!-- Edit: any logged-in user -->
-            <td>
-                <a sec:authorize="isAuthenticated()"
-                   th:href="@{/editworkout/{id}(id=${workout.id})}"
-                   class="btn btn-primary">Edit</a>
-            </td>
+            <!-- Owner shown only in the public list -->
+            <td th:unless="${mine}" th:text="${workout.owner?.username}"></td>
 
-            <!-- Delete: ADMIN only -->
-            <td>
-                <form sec:authorize="hasRole('ADMIN')"
-                      th:action="@{/deleteworkout/{id}(id=${workout.id})}" method="post">
+            <!-- Edit/Delete only in My workouts -->
+            <td th:if="${mine}">
+                <a th:href="@{/editworkout/{id}(id=${workout.id})}" class="btn btn-primary">Edit</a>
+            </td>
+            <td th:if="${mine}">
+                <form th:action="@{/deleteworkout/{id}(id=${workout.id})}" method="post">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             </td>
         </tr>
     </table>
 
-    <div sec:authorize="isAuthenticated()">
-        <a th:href="@{/addworkout}" class="btn btn-success">Add workout</a>
-    </div>
+    <a th:if="${mine}" th:href="@{/addworkout}" class="btn btn-success">Add workout</a>
 </body>
 </html>

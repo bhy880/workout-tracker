@@ -29,14 +29,12 @@ public SecurityFilterChain configure(HttpSecurity http) throws Exception {
             .requestMatchers("/css/**", "/login").permitAll()
             // read-only pages are open to everyone (GET only)
             .requestMatchers(HttpMethod.GET, "/", "/workouts", "/workout/**").permitAll()
-            // deleting requires the ADMIN role
-            .requestMatchers("/deleteworkout/**", "/deleteexercise/**").hasRole("ADMIN")
             // everything else (add/edit) requires login
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
             .loginPage("/login")                     // use our own login.html
-            .defaultSuccessUrl("/workouts", true)
+            .defaultSuccessUrl("/myworkouts", true)
             .permitAll()
         )
         .logout(logout -> logout

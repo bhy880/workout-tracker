@@ -48,30 +48,30 @@ public class WorkoutTrackerApplication {
 				squat.setSets(4);
 				squat.setRepsPerSet(8);
 				squat.setWeightInKg(80.0);
-				squat.setWorkout(legDay);      // link the exercise to its workout
+				squat.setWorkout(legDay);      
 				eRepository.save(squat);
 				
 				Exercise lunges = new Exercise();
 				lunges.setExerciseName("Lunges");
 				lunges.setSets(3);
-            lunges.setRepsPerSet(12);
-            lunges.setWeightInKg(20.0);
-            lunges.setWorkout(legDay);
-            eRepository.save(lunges);
+            	lunges.setRepsPerSet(12);
+            	lunges.setWeightInKg(20.0);
+            	lunges.setWorkout(legDay);
+            	eRepository.save(lunges);
 			
-            Workout upperBody = new Workout();
-            upperBody.setWorkoutName("Upper body");
-            upperBody.setWorkoutDate(LocalDate.of(2026, 10, 28));
-            upperBody.setDurationInMinutes(45);
-            wRepository.save(upperBody);
+            	Workout upperBody = new Workout();
+            	upperBody.setWorkoutName("Upper body");
+            	upperBody.setWorkoutDate(LocalDate.of(2026, 10, 28));
+            	upperBody.setDurationInMinutes(45);
+            	wRepository.save(upperBody);
 			
-            Exercise bench = new Exercise();
-            bench.setExerciseName("Bench press");
-            bench.setSets(4);
-            bench.setRepsPerSet(6);
-            bench.setWeightInKg(60.0);
-            bench.setWorkout(upperBody);
-            eRepository.save(bench);
+            	Exercise bench = new Exercise();
+            	bench.setExerciseName("Bench press");
+            	bench.setSets(4);
+            	bench.setRepsPerSet(6);
+            	bench.setWeightInKg(60.0);
+            	bench.setWorkout(upperBody);
+            	eRepository.save(bench);
 			
 		}
 

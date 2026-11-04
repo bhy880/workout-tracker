@@ -5,11 +5,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import bhy880.workout_tracker.domain.ExerciseRepository;
 import bhy880.workout_tracker.domain.Workout;
 import bhy880.workout_tracker.domain.WorkoutRepository;
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -41,7 +44,10 @@ public class WorkoutController {
     }
 
     @PostMapping("/addworkout")
-    public String saveWorkout(Workout workout) {
+    public String saveWorkout(@Valid Workout workout, BindingResult result) {
+        if (result.hasErrors()){
+            return "workoutform";
+        }
         wRepository.save(workout);
         return "redirect:/workouts";
     }
@@ -54,13 +60,17 @@ public class WorkoutController {
     }
 
     @PostMapping("/editworkout/{id}")
-    public String editWorkout(@PathVariable Long id, Workout currWorkout) {
-    Workout workout = wRepository.findById(id).orElseThrow();
-    workout.setWorkoutName(currWorkout.getWorkoutName());
-    workout.setWorkoutDate(currWorkout.getWorkoutDate());
-    workout.setDurationInMinutes(currWorkout.getDurationInMinutes());
-    wRepository.save(workout);
-    return "redirect:/workouts";
+    public String editWorkout(@PathVariable Long id, @Valid Workout currWorkout,
+        BindingResult result) {
+            if (result.hasErrors()) {
+                return "workoutform";
+            }
+            Workout workout = wRepository.findById(id).orElseThrow();
+            workout.setWorkoutName(currWorkout.getWorkoutName());
+            workout.setWorkoutDate(currWorkout.getWorkoutDate());
+            workout.setDurationInMinutes(currWorkout.getDurationInMinutes());
+            wRepository.save(workout);
+            return "redirect:/workouts";
     }
     
 

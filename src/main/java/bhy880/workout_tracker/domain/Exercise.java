@@ -7,6 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity 
 public class Exercise {
@@ -14,10 +19,21 @@ public class Exercise {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    String exerciseName;
-    int sets;
-    int repsPerSet;
-    double weightInKg;
+    @NotBlank(message = "Exercise name required")
+    @Size(max = 40)
+    private String exerciseName;
+
+    @NotNull(message = "Sets required")
+    @Min(value = 1)
+    private int sets;
+
+    @NotNull(message = "Reps required")
+    @Min(value = 1)
+    private int repsPerSet;
+
+    @NotNull(message = "Weight required")
+    @PositiveOrZero(message = "Weight cant be negative")
+    private double weightInKg;
 
     @ManyToOne 
     @JoinColumn(name = "workoutid")

@@ -3,6 +3,7 @@ package bhy880.workout_tracker.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import bhy880.workout_tracker.domain.Exercise;
 import bhy880.workout_tracker.domain.ExerciseRepository;
 import bhy880.workout_tracker.domain.Workout;
 import bhy880.workout_tracker.domain.WorkoutRepository;
+import jakarta.validation.Valid;
 
 @Controller
 public class ExerciseController {
@@ -34,9 +36,13 @@ public class ExerciseController {
     }
 
     @PostMapping("/addexercise/{workoutId}")
-    public String saveExercise(@PathVariable Long workoutId,Exercise exercise) {
+    public String saveExercise(@PathVariable Long workoutId, @Valid Exercise exercise,
+        BindingResult result) {
         Workout workout = workoutRepository.findById(workoutId).orElseThrow();
         exercise.setWorkout(workout);
+        if (result.hasErrors()) {
+            return "exerciseform";
+        }
         exerciseRepository.save(exercise);
         return "redirect:/workout/" + workoutId;
     }
@@ -49,8 +55,14 @@ public class ExerciseController {
     }
 
     @PostMapping("/editexercise/{id}")
-    public String editExercise(@PathVariable Long id, Exercise currExercise) {
+    public String editExercise(@PathVariable Long id, @Valid Exercise currExercise,
+        BindingResult result) {
         Exercise exercise = exerciseRepository.findById(id).orElseThrow();
+        if (result.hasErrors()) {
+            currExercise.setId(id);
+            currExercise.setWorkout(exercise.getWorkout());
+            return "exerciseform";
+        }
         exercise.setExerciseName(currExercise.getExerciseName());
         exercise.setSets(currExercise.getSets());
         exercise.setRepsPerSet(currExercise.getRepsPerSet());

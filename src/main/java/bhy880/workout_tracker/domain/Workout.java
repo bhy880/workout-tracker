@@ -9,6 +9,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import jakarta.persistence.GenerationType;
 
 @Entity 
@@ -17,9 +22,16 @@ public class Workout {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    
+    @NotBlank(message = "Workout name required")
+    @Size(max = 40, message = "Max 40 characters")
     private String workoutName;
+
+    @NotNull(message = "Date required")
     private LocalDate workoutDate;
+
+    @NotNull(message = "Duration required")
+    @Min(value = 1)
+    @Max(value = 600)
     private int durationInMinutes;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "workout")
